@@ -21,10 +21,10 @@
     "reverse_mapping": true
   },
   "outbounds": [
-    {"tag": "🇭🇰 香港手动", "type": "urltest", "outbounds": []},
-    {"tag": "🇯🇵 日本手动", "type": "urltest", "outbounds": []},
-    {"tag": "🇸🇬 狮城手动", "type": "urltest", "outbounds": []},
-    {"tag": "🇺🇲 美国手动", "type": "urltest", "outbounds": []},
+    {"tag": "🇭🇰 香港自动", "type": "urltest", "outbounds": []},
+    {"tag": "🇯🇵 日本自动", "type": "urltest", "outbounds": []},
+    {"tag": "🇸🇬 狮城自动", "type": "urltest", "outbounds": []},
+    {"tag": "🇺🇲 美国自动", "type": "urltest", "outbounds": []},
     {"tag": "🐸 手动选择", "type": "selector", "outbounds": []},
     {"tag": "♻️ 自动选择", "type": "urltest", "outbounds": []},
     {"tag": "🍃 延迟辅助", "type": "urltest", "outbounds": ["🚀 默认代理", "🎯 全球直连"]},
