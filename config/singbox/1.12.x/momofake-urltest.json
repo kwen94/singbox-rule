@@ -6,14 +6,15 @@
       {"tag": "foreign", "type": "https", "server": "8.8.8.8", "detour": "♻️ 自动选择"},
       {"tag": "fakeip", "type": "fakeip", "inet4_range": "198.18.0.0/15", "inet6_range": "fc00::/18"}
     ],
-    "rules": [
-      {"clash_mode": "direct", "server": "local"},
-      {"clash_mode": "global", "server": "fakeip"},
-      {"query_type": "HTTPS", "action": "reject"},
-      {"rule_set": "geosite-fakeipfilter", "server": "local"},
-      {"query_type": ["A", "AAAA"], "server": "fakeip", "rewrite_ttl": 1},
-      {"rule_set": "geosite-cn", "server": "local"}
-    ],
+"rules": [
+    {"clash_mode": "direct","action": "route","server": "local"},
+    {"clash_mode": "global","action": "route","server": "fakeip"},
+    {"query_type": "HTTPS","action": "reject"},
+    {"rule_set": "geosite-fakeipfilter","action": "route","server": "local"},
+    {"domain_suffix": ["riotgames.com"],"action": "route","server": "local"},
+    {"rule_set": "geosite-cn","action": "route","server": "local"},
+    {"query_type": ["A","AAAA"],"action": "route","server": "fakeip","rewrite_ttl": 1}
+  ],
     "final": "foreign",
     "client_subnet": "223.5.5.0/24",
     "strategy": "prefer_ipv4",
@@ -26,7 +27,7 @@
     {"tag": "🇸🇬 狮城自动", "type": "urltest", "outbounds": []},
     {"tag": "🇺🇲 美国自动", "type": "urltest", "outbounds": []},
     {"tag": "🐸 手动选择", "type": "selector", "outbounds": []},
-    {"tag": "♻️ 自动选择", "type": "urltest", "outbounds": []},
+    {"tag": "♻️ 自动选择", "type": "urltest", "outbounds": [], "interval": "5m", "tolerance": 100},
     {"tag": "GLOBAL", "type": "selector", "outbounds": ["🇭🇰 香港自动", "🇯🇵 日本自动", "🇸🇬 狮城自动", "🇺🇲 美国自动", "🐸 手动选择", "♻️ 自动选择", "🎯 全球直连"]},
     {"tag": "🎯 全球直连", "type": "direct"}
   ],
@@ -37,6 +38,8 @@
       {"ip_is_private": true, "outbound": "🎯 全球直连"},
       {"clash_mode": "direct", "outbound": "🎯 全球直连"},
       {"clash_mode": "global", "outbound": "GLOBAL"},
+      {"rule_set": "custom-direct-ip", "outbound":"🎯 全球直连"},
+      {"domain_suffix": ["riotgames.com","riotcdn.net"],"action": "route","outbound": "🎯 全球直连"},
       {"rule_set": "geosite-ai", "outbound": "♻️ 自动选择"},
       {"rule_set": "geosite-youtube", "outbound": "♻️ 自动选择"},
       {"rule_set": "geosite-google", "outbound": "♻️ 自动选择"},
@@ -48,10 +51,10 @@
       {"rule_set": "geosite-tiktok", "outbound": "♻️ 自动选择"},
       {"rule_set": "geosite-netflix", "outbound": "♻️ 自动选择"},
       {"rule_set": "geosite-paypal", "outbound": "♻️ 自动选择"},
-      {"rule_set": "geosite-steamcn", "outbound": "♻️ 自动选择"},
+      {"rule_set": "geosite-steamcn", "outbound": "🎯 全球直连"},
       {"rule_set": "geosite-steam", "outbound": "♻️ 自动选择"},
       {"rule_set": "geosite-!cn", "outbound": "♻️ 自动选择"},
-      {"rule_set": "geosite-cn", "outbound": "♻️ 自动选择"},
+      {"rule_set": "geosite-cn", "outbound": "🎯 全球直连"},
       {"action": "resolve"},
       {"rule_set": "geoip-google", "outbound": "♻️ 自动选择"},
       {"rule_set": "geoip-apple", "outbound": "♻️ 自动选择"},
@@ -60,6 +63,7 @@
       {"rule_set": "geoip-cn", "outbound": "🎯 全球直连"}
     ],
     "rule_set": [
+      {"tag":"custom-direct-ip","type":"inline","rules":[{"ip_cidr":["101.44.37.63/32","101.44.33.160/32"]}]},
       {"tag": "geosite-fakeipfilter", "type": "remote", "format": "source", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/qichiyuhub/rule/refs/heads/main/rules/fakeipfilter.json", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-ai", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/category-ai-!cn.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geosite-youtube", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geosite/youtube.srs", "download_detour": "🎯 全球直连"},
@@ -82,7 +86,7 @@
       {"tag": "geoip-netflix", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/sing/geo/geoip/netflix.srs", "download_detour": "🎯 全球直连"},
       {"tag": "geoip-cn", "type": "remote", "format": "binary", "url": "https://gh-proxy.com/https://github.com/qljsyph/ruleset-icon/raw/refs/heads/main/sing-box/geoip/China-ASN-combined-ip.srs", "download_detour": "🎯 全球直连"}
     ],
-    "final": "♻️ 自动选择",
+    "final": "🎯 全球直连",
     "default_domain_resolver": {"server": "public"}
   },
   "inbounds": [
